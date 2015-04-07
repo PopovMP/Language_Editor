@@ -109,11 +109,15 @@ namespace Language_Editor
 
             foreach (var textBox in engTextBoxes)
             {
+                textBox.MouseWheel -= TextBox_MouseWheel;
+                textBox.TextChanged -= TextBox_TextChanged;
                 textBox.Parent = null;
                 textBox.Dispose();
             }
             foreach (var textBox in altTextBoxes)
             {
+                textBox.MouseWheel -= TextBox_MouseWheel;
+                textBox.TextChanged -= TextBox_TextChanged;
                 textBox.Parent = null;
                 textBox.Dispose();
             }
@@ -150,7 +154,9 @@ namespace Language_Editor
                 altTextBoxes[i].Text = String.Empty;
                 engTextBoxes[i].Enabled = false;
                 altTextBoxes[i].Enabled = false;
-                altTextBoxes[i].TextChanged -= EngTextBox_TextChanged;
+                altTextBoxes[i].TextChanged -= TextBox_TextChanged;
+                engTextBoxes[i].MouseWheel -= TextBox_MouseWheel;
+                altTextBoxes[i].MouseWheel -= TextBox_MouseWheel;
                 altTextBoxes[i].Tag = -1;
             }
 
@@ -162,13 +168,31 @@ namespace Language_Editor
                 altTextBoxes[i].Text = asAlt[index];
                 engTextBoxes[i].Enabled = true;
                 altTextBoxes[i].Enabled = true;
-                altTextBoxes[i].TextChanged += EngTextBox_TextChanged;
+                altTextBoxes[i].TextChanged += TextBox_TextChanged;
+                engTextBoxes[i].MouseWheel += TextBox_MouseWheel;
+                altTextBoxes[i].MouseWheel += TextBox_MouseWheel;
                 altTextBoxes[i].Tag = i;
             }
 
             isProgramChange = false;
 
             lblPhrases.Text = phrases.ToString();
+            altTextBoxes[0].Focus();
+        }
+
+        private void TextBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (!vScrollBar.Enabled) return;
+            if (e.Delta < 0 && vScrollBar.Value < vScrollBar.Maximum - vScrollBar.LargeChange + 1)
+                vScrollBar.Value++;
+            else if (e.Delta > 0 && vScrollBar.Value > 0)
+                vScrollBar.Value--;
+            else
+                return;
+
+            SetTextBoxes();
+            SetTextBoxesStyle();
+            ValidateGoNext();
         }
 
         private void ValidateGoNext()
@@ -196,7 +220,7 @@ namespace Language_Editor
             lblNotTranslated.Text = notTranslated.ToString();
         }
 
-        private void EngTextBox_TextChanged(object sender, EventArgs e)
+        private void TextBox_TextChanged(object sender, EventArgs e)
         {
             if (isProgramChange) return;
             var group = cbxGroups.Text;
