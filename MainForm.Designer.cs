@@ -42,6 +42,7 @@
             this.itmImportAlt = new System.Windows.Forms.ToolStripMenuItem();
             this.itmHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSupportForum = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.statusBar = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblPhrases = new System.Windows.Forms.ToolStripStatusLabel();
@@ -62,7 +63,7 @@
             this.btnSearch = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmAddNewPhrases = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.pnlEditor.SuspendLayout();
@@ -117,7 +118,8 @@
             this.toolStripSeparator4,
             this.itmExportNewEnglish,
             this.toolStripSeparator5,
-            this.itmImportAlt});
+            this.itmImportAlt,
+            this.itmAddNewPhrases});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -178,6 +180,13 @@
             this.itmSupportForum.Size = new System.Drawing.Size(163, 22);
             this.itmSupportForum.Text = "Support Forum...";
             this.itmSupportForum.Click += new System.EventHandler(this.ItmSupportForum_Click);
+            // 
+            // itmAbout
+            // 
+            this.itmAbout.Name = "itmAbout";
+            this.itmAbout.Size = new System.Drawing.Size(163, 22);
+            this.itmAbout.Text = "About...";
+            this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
             // 
             // statusBar
             // 
@@ -342,12 +351,13 @@
             this.saveFileDialog.Filter = "Language Files|*.xml";
             this.saveFileDialog.Title = "Save Language File";
             // 
-            // itmAbout
+            // itmAddNewPhrases
             // 
-            this.itmAbout.Name = "itmAbout";
-            this.itmAbout.Size = new System.Drawing.Size(163, 22);
-            this.itmAbout.Text = "About...";
-            this.itmAbout.Click += new System.EventHandler(this.ItmAbout_Click);
+            this.itmAddNewPhrases.Name = "itmAddNewPhrases";
+            this.itmAddNewPhrases.Size = new System.Drawing.Size(213, 22);
+            this.itmAddNewPhrases.Text = "Add New Phrases";
+            this.itmAddNewPhrases.ToolTipText = "Add new phrases from a .txt file to the current group.";
+            this.itmAddNewPhrases.Click += new System.EventHandler(this.ItmAddNewPhrases_Click);
             // 
             // MainForm
             // 
@@ -413,6 +423,7 @@
         private System.Windows.Forms.ToolStripMenuItem itmHelp;
         private System.Windows.Forms.ToolStripMenuItem itmSupportForum;
         private System.Windows.Forms.ToolStripMenuItem itmAbout;
+        private System.Windows.Forms.ToolStripMenuItem itmAddNewPhrases;
     }
 }
 

@@ -157,5 +157,24 @@ namespace Language_Editor
             var handler = ExecutionError;
             if (handler != null) handler(this, new ExecutionErrorEventArgs(message));
         }
+
+        public void ImportNewPhrasesFromTextFile(string path, string group)
+        {
+            try
+            {
+                var reader = File.OpenText(path);
+                var text = reader.ReadToEnd();
+                reader.Close();
+                var phrasesList = text.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var phrase in phrasesList)
+                    if (!Translation[group].ContainsKey(phrase))
+                        Translation[group].Add(phrase, phrase);
+            }
+            catch (Exception e)
+            {
+                OnExecutionError(String.Format("Add new phrases: {0}", e.Message));
+            }
+        }
     }
 }

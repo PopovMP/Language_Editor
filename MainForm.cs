@@ -134,6 +134,7 @@ namespace Language_Editor
             itmExportEng.Enabled = false;
             itmExportNewEnglish.Enabled = false;
             itmImportAlt.Enabled = false;
+            itmAddNewPhrases.Enabled = false;
         }
 
         private void SetTextBoxes()
@@ -293,6 +294,7 @@ namespace Language_Editor
             itmExportEng.Enabled = true;
             itmExportNewEnglish.Enabled = true;
             itmImportAlt.Enabled = true;
+            itmAddNewPhrases.Enabled = true;
 
             SetFormText();
         }
@@ -451,15 +453,20 @@ namespace Language_Editor
 
         private void ItmImportAlt_Click(object sender, EventArgs e)
         {
-            openFileDialog.DefaultExt = "txt";
-            openFileDialog.Filter = "Text file|*.txt";
-            var result = openFileDialog.ShowDialog();
-            if (result != DialogResult.OK) return;
-            var path = openFileDialog.FileName;
+            string path = GetTxtFilePath();
             if (String.IsNullOrEmpty(path)) return;
             translationManager.ImportAlternativeTextFile(path);
             GroupChanged();
             SetFormText();
+        }
+
+        private string GetTxtFilePath()
+        {
+            openFileDialog.DefaultExt = "txt";
+            openFileDialog.Filter = "Text file|*.txt";
+            var result = openFileDialog.ShowDialog();
+            if (result != DialogResult.OK) return String.Empty;
+            return openFileDialog.FileName;
         }
 
         private void ItmExportNewEnglish_Click(object sender, EventArgs e)
@@ -504,6 +511,21 @@ namespace Language_Editor
         {
             var about = new AboutBox();
             about.ShowDialog();
+        }
+
+        private void ItmAddNewPhrases_Click(object sender, EventArgs e)
+        {
+            var group = cbxGroups.Text;
+            if (String.IsNullOrEmpty(group) ||
+                !translationManager.Translation.ContainsKey(group))
+                return;
+
+            string path = GetTxtFilePath();
+            if (String.IsNullOrEmpty(path)) return;
+            translationManager.ImportNewPhrasesFromTextFile(path, group);
+            isTranslationChanged = true;
+            GroupChanged();
+            SetFormText();
         }
     }
 }
