@@ -89,16 +89,21 @@ namespace Language_Editor
                     Size = new Size(tbxWidth, tbxHeight),
                     Location = new Point(xMain, yMain),
                     Parent = pnlEditor,
-                    ReadOnly = true
+                    ReadOnly = true,
+                    Tag = -1
                 };
+                engTextBoxes[i].MouseWheel += TextBox_MouseWheel;
 
                 altTextBoxes[i] = new TextBox
                 {
                     Multiline = true,
                     Size = new Size(tbxWidth, tbxHeight),
                     Location = new Point(xAlt, yAlt),
-                    Parent = pnlEditor
+                    Parent = pnlEditor,
+                    Tag = i
                 };
+                altTextBoxes[i].MouseWheel += TextBox_MouseWheel;
+                altTextBoxes[i].TextChanged += TextBox_TextChanged;
             }
         }
 
@@ -117,7 +122,6 @@ namespace Language_Editor
             foreach (var textBox in altTextBoxes)
             {
                 textBox.MouseWheel -= TextBox_MouseWheel;
-                textBox.TextChanged -= TextBox_TextChanged;
                 textBox.Parent = null;
                 textBox.Dispose();
             }
@@ -149,18 +153,6 @@ namespace Language_Editor
             var asAlt = translationManager.Translation[group].Values.ToArray();
 
             isProgramChange = true;
-            for (var i = 0; i < textBoxes; i++)
-            {
-                engTextBoxes[i].Text = String.Empty;
-                altTextBoxes[i].Text = String.Empty;
-                engTextBoxes[i].Enabled = false;
-                altTextBoxes[i].Enabled = false;
-                altTextBoxes[i].TextChanged -= TextBox_TextChanged;
-                engTextBoxes[i].MouseWheel -= TextBox_MouseWheel;
-                altTextBoxes[i].MouseWheel -= TextBox_MouseWheel;
-                altTextBoxes[i].Tag = -1;
-            }
-
             var max = Math.Min(textBoxes, phrases);
             for (var i = 0; i < max; i++)
             {
@@ -169,10 +161,13 @@ namespace Language_Editor
                 altTextBoxes[i].Text = asAlt[index];
                 engTextBoxes[i].Enabled = true;
                 altTextBoxes[i].Enabled = true;
-                altTextBoxes[i].TextChanged += TextBox_TextChanged;
-                engTextBoxes[i].MouseWheel += TextBox_MouseWheel;
-                altTextBoxes[i].MouseWheel += TextBox_MouseWheel;
-                altTextBoxes[i].Tag = i;
+            }
+            for (var i = max; i < textBoxes; i++)
+            {
+                engTextBoxes[i].Text = String.Empty;
+                altTextBoxes[i].Text = String.Empty;
+                engTextBoxes[i].Enabled = false;
+                altTextBoxes[i].Enabled = false;
             }
 
             isProgramChange = false;
@@ -211,7 +206,8 @@ namespace Language_Editor
             var notTranslated = 0;
             for (var i = 0; i < count; i++)
             {
-                if (asMain[i] == asAlt[i])
+                if (asMain[i] == asAlt[i] ||
+                    String.IsNullOrEmpty(asAlt[i]) && !String.IsNullOrEmpty(asMain[i]))
                 {
                     btnNext.Enabled = true;
                     notTranslated++;
@@ -243,7 +239,7 @@ namespace Language_Editor
                 altTextBoxes[i].BackColor = Color.White;
                 if (engTextBoxes[i].Text == altTextBoxes[i].Text ||
                     String.IsNullOrEmpty(altTextBoxes[i].Text))
-                    if (!string.IsNullOrEmpty(engTextBoxes[i].Text))
+                    if (!String.IsNullOrEmpty(engTextBoxes[i].Text))
                         altTextBoxes[i].BackColor = Color.Yellow;
             }
         }
@@ -453,7 +449,7 @@ namespace Language_Editor
 
         private void ItmImportAlt_Click(object sender, EventArgs e)
         {
-            string path = GetTxtFilePath();
+            var path = GetTxtFilePath();
             if (String.IsNullOrEmpty(path)) return;
             translationManager.ImportAlternativeTextFile(path);
             GroupChanged();
@@ -520,7 +516,7 @@ namespace Language_Editor
                 !translationManager.Translation.ContainsKey(group))
                 return;
 
-            string path = GetTxtFilePath();
+            var path = GetTxtFilePath();
             if (String.IsNullOrEmpty(path)) return;
             translationManager.ImportNewPhrasesFromTextFile(path, group);
             isTranslationChanged = true;
