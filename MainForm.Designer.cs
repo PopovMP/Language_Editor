@@ -40,6 +40,8 @@
             this.itmExportNewEnglish = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.itmImportAlt = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmAddNewPhrases = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmAddNewPhrasesFromLangFile = new System.Windows.Forms.ToolStripMenuItem();
             this.itmHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.itmSupportForum = new System.Windows.Forms.ToolStripMenuItem();
             this.itmAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +65,6 @@
             this.btnSearch = new System.Windows.Forms.ToolStripButton();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.itmAddNewPhrases = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.pnlEditor.SuspendLayout();
@@ -119,7 +120,8 @@
             this.itmExportNewEnglish,
             this.toolStripSeparator5,
             this.itmImportAlt,
-            this.itmAddNewPhrases});
+            this.itmAddNewPhrases,
+            this.itmAddNewPhrasesFromLangFile});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -127,7 +129,7 @@
             // itmExportEng
             // 
             this.itmExportEng.Name = "itmExportEng";
-            this.itmExportEng.Size = new System.Drawing.Size(213, 22);
+            this.itmExportEng.Size = new System.Drawing.Size(245, 22);
             this.itmExportEng.Text = "Export English Phrases";
             this.itmExportEng.ToolTipText = "Export all English phrases to a plane text file.";
             this.itmExportEng.Click += new System.EventHandler(this.ItmExportEng_Click);
@@ -135,7 +137,7 @@
             // itmExportAlt
             // 
             this.itmExportAlt.Name = "itmExportAlt";
-            this.itmExportAlt.Size = new System.Drawing.Size(213, 22);
+            this.itmExportAlt.Size = new System.Drawing.Size(245, 22);
             this.itmExportAlt.Text = "Export Alternative Phrases";
             this.itmExportAlt.ToolTipText = "Export all alternative phrases to a plane text file.";
             this.itmExportAlt.Click += new System.EventHandler(this.ItmExportAlt_Click);
@@ -143,27 +145,43 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(242, 6);
             // 
             // itmExportNewEnglish
             // 
             this.itmExportNewEnglish.Name = "itmExportNewEnglish";
-            this.itmExportNewEnglish.Size = new System.Drawing.Size(213, 22);
+            this.itmExportNewEnglish.Size = new System.Drawing.Size(245, 22);
             this.itmExportNewEnglish.Text = "Export New Language File";
             this.itmExportNewEnglish.Click += new System.EventHandler(this.ItmExportNewEnglish_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(210, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(242, 6);
             // 
             // itmImportAlt
             // 
             this.itmImportAlt.Name = "itmImportAlt";
-            this.itmImportAlt.Size = new System.Drawing.Size(213, 22);
+            this.itmImportAlt.Size = new System.Drawing.Size(245, 22);
             this.itmImportAlt.Text = "Import Alternative Phrases";
             this.itmImportAlt.ToolTipText = "Import a translation from a text file. It overrides the current translation.";
             this.itmImportAlt.Click += new System.EventHandler(this.ItmImportAlt_Click);
+            // 
+            // itmAddNewPhrases
+            // 
+            this.itmAddNewPhrases.Name = "itmAddNewPhrases";
+            this.itmAddNewPhrases.Size = new System.Drawing.Size(245, 22);
+            this.itmAddNewPhrases.Text = "Add New Phrases to Group";
+            this.itmAddNewPhrases.ToolTipText = "Add new phrases from a .txt file to the current group.";
+            this.itmAddNewPhrases.Click += new System.EventHandler(this.ItmAddNewPhrases_Click);
+            // 
+            // itmAddNewPhrasesFromLangFile
+            // 
+            this.itmAddNewPhrasesFromLangFile.Name = "itmAddNewPhrasesFromLangFile";
+            this.itmAddNewPhrasesFromLangFile.Size = new System.Drawing.Size(245, 22);
+            this.itmAddNewPhrasesFromLangFile.Text = "Add New Phrases from Lang File";
+            this.itmAddNewPhrasesFromLangFile.ToolTipText = "Reads other language file and import all missing phrases.";
+            this.itmAddNewPhrasesFromLangFile.Click += new System.EventHandler(this.AddNewPhrasesFromLangFile_Click);
             // 
             // itmHelp
             // 
@@ -205,8 +223,8 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(50, 17);
-            this.toolStripStatusLabel1.Text = "Phrases:";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(99, 17);
+            this.toolStripStatusLabel1.Text = "Phrases in Group:";
             // 
             // lblPhrases
             // 
@@ -217,8 +235,8 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(88, 17);
-            this.toolStripStatusLabel2.Text = "Not Translated:";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(137, 17);
+            this.toolStripStatusLabel2.Text = "Not Translated in Group:";
             // 
             // lblNotTranslated
             // 
@@ -327,6 +345,7 @@
             // 
             this.tbxSearch.Name = "tbxSearch";
             this.tbxSearch.Size = new System.Drawing.Size(150, 25);
+            this.tbxSearch.ToolTipText = "Textr to search.";
             this.tbxSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TbxSearch_KeyDown);
             // 
             // btnSearch
@@ -336,7 +355,7 @@
             this.btnSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(23, 22);
-            this.btnSearch.Text = "toolStripButton1";
+            this.btnSearch.Text = "Search text in current group.";
             this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // openFileDialog
@@ -350,14 +369,6 @@
             this.saveFileDialog.DefaultExt = "xml";
             this.saveFileDialog.Filter = "Language Files|*.xml";
             this.saveFileDialog.Title = "Save Language File";
-            // 
-            // itmAddNewPhrases
-            // 
-            this.itmAddNewPhrases.Name = "itmAddNewPhrases";
-            this.itmAddNewPhrases.Size = new System.Drawing.Size(213, 22);
-            this.itmAddNewPhrases.Text = "Add New Phrases";
-            this.itmAddNewPhrases.ToolTipText = "Add new phrases from a .txt file to the current group.";
-            this.itmAddNewPhrases.Click += new System.EventHandler(this.ItmAddNewPhrases_Click);
             // 
             // MainForm
             // 
@@ -424,6 +435,7 @@
         private System.Windows.Forms.ToolStripMenuItem itmSupportForum;
         private System.Windows.Forms.ToolStripMenuItem itmAbout;
         private System.Windows.Forms.ToolStripMenuItem itmAddNewPhrases;
+        private System.Windows.Forms.ToolStripMenuItem itmAddNewPhrasesFromLangFile;
     }
 }
 

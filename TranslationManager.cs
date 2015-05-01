@@ -176,5 +176,27 @@ namespace Language_Editor
                 OnExecutionError(String.Format("Add new phrases: {0}", e.Message));
             }
         }
+
+        public bool ImportNewPhrasesFromLangFile(string path)
+        {
+            var changed = false;
+            var xdoc = XDocument.Load(path);
+            var lang = ParseLangFile(xdoc);
+
+            foreach (var groupDict in lang)
+            {
+                var group = groupDict.Key;
+                if (!Translation.ContainsKey(group))
+                    Translation.Add(group, new Dictionary<string, string>());
+                foreach (var phrase in groupDict.Value)
+                    if (!Translation[group].ContainsKey(phrase.Key))
+                    {
+                        Translation[group].Add(phrase.Key, phrase.Key);
+                        changed = true;
+                    }
+            }
+
+            return changed;
+        }
     }
 }

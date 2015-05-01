@@ -142,6 +142,7 @@ namespace Language_Editor
             itmExportNewEnglish.Enabled = false;
             itmImportAlt.Enabled = false;
             itmAddNewPhrases.Enabled = false;
+            itmAddNewPhrasesFromLangFile.Enabled = false;
         }
 
         private void SetTextBoxes()
@@ -294,6 +295,7 @@ namespace Language_Editor
             itmExportNewEnglish.Enabled = true;
             itmImportAlt.Enabled = true;
             itmAddNewPhrases.Enabled = true;
+            itmAddNewPhrasesFromLangFile.Enabled = true;
 
             SetFormText();
         }
@@ -459,15 +461,6 @@ namespace Language_Editor
             SetFormText();
         }
 
-        private string GetTxtFilePath()
-        {
-            openFileDialog.DefaultExt = "txt";
-            openFileDialog.Filter = "Text file|*.txt";
-            var result = openFileDialog.ShowDialog();
-            if (result != DialogResult.OK) return String.Empty;
-            return openFileDialog.FileName;
-        }
-
         private void ItmExportNewEnglish_Click(object sender, EventArgs e)
         {
             saveFileDialog.DefaultExt = "xml";
@@ -477,6 +470,69 @@ namespace Language_Editor
             var path = saveFileDialog.FileName;
             if (String.IsNullOrEmpty(path)) return;
             translationManager.ExportNewEnglishPhrases(path);
+        }
+
+        private void ItmAddNewPhrases_Click(object sender, EventArgs e)
+        {
+            var group = cbxGroups.Text;
+            if (String.IsNullOrEmpty(group) ||
+                !translationManager.Translation.ContainsKey(group))
+                return;
+
+            var path = GetTxtFilePath();
+            if (String.IsNullOrEmpty(path)) return;
+            if (!path.Contains(group))
+            {
+                MessageBox.Show("Wrong import file!", "Import Phrases", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            translationManager.ImportNewPhrasesFromTextFile(path, group);
+            isTranslationChanged = true;
+            GroupChanged();
+            SetFormText();
+        }
+
+        private void AddNewPhrasesFromLangFile_Click(object sender, EventArgs e)
+        {
+            var group = cbxGroups.Text;
+            if (String.IsNullOrEmpty(group) ||
+                !translationManager.Translation.ContainsKey(group))
+                return;
+
+            var path = GetXmlFilePath();
+            if (String.IsNullOrEmpty(path)) return;
+
+            isTranslationChanged = translationManager.ImportNewPhrasesFromLangFile(path);
+
+            if (!isTranslationChanged) return;
+
+            var selectedGroupIndex = cbxGroups.SelectedIndex;
+            cbxGroups.Items.Clear();
+            foreach (var grp in translationManager.Translation.Keys)
+                cbxGroups.Items.Add(grp);
+            cbxGroups.SelectedIndex = selectedGroupIndex;
+
+            GroupChanged();
+            SetFormText();
+        }
+
+        private string GetTxtFilePath()
+        {
+            openFileDialog.DefaultExt = "txt";
+            openFileDialog.Filter = "Text file|*.txt";
+            var result = openFileDialog.ShowDialog();
+            if (result != DialogResult.OK) return String.Empty;
+            return openFileDialog.FileName;
+        }
+
+        private string GetXmlFilePath()
+        {
+            openFileDialog.DefaultExt = "xml";
+            openFileDialog.Filter = "XML file|*.xml";
+            var result = openFileDialog.ShowDialog();
+            if (result != DialogResult.OK) return String.Empty;
+            return openFileDialog.FileName;
         }
 
         private void SetFormText()
@@ -510,21 +566,6 @@ namespace Language_Editor
         {
             var about = new AboutBox();
             about.ShowDialog();
-        }
-
-        private void ItmAddNewPhrases_Click(object sender, EventArgs e)
-        {
-            var group = cbxGroups.Text;
-            if (String.IsNullOrEmpty(group) ||
-                !translationManager.Translation.ContainsKey(group))
-                return;
-
-            var path = GetTxtFilePath();
-            if (String.IsNullOrEmpty(path)) return;
-            translationManager.ImportNewPhrasesFromTextFile(path, group);
-            isTranslationChanged = true;
-            GroupChanged();
-            SetFormText();
         }
     }
 }
