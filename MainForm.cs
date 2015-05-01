@@ -44,6 +44,7 @@ namespace Language_Editor
             SetTextBoxes();
             SetTextBoxesStyle();
             ValidateGoNext();
+
         }
 
         private void SetScrollBar()
@@ -62,13 +63,15 @@ namespace Language_Editor
                 vScrollBar.SmallChange = 1;
                 vScrollBar.LargeChange = (max/2);
                 vScrollBar.Maximum = phrases - textBoxes + vScrollBar.LargeChange - 1;
-                vScrollBar.Value = 0;
+                if (vScrollBar.Value > vScrollBar.Maximum - vScrollBar.LargeChange)
+                    vScrollBar.Value = 0;
             }
         }
 
         private void CreateTextBoxes()
         {
             textBoxes = pnlEditor.Height/TextBoxesMinimumHeight;
+            if (textBoxes < 1) return;
 
             engTextBoxes = new TextBox[textBoxes];
             altTextBoxes = new TextBox[textBoxes];
